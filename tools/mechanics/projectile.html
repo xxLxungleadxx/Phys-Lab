@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="投射運動をブラウザで操作して確認できる Phys-Lab のシミュレーション教材です。">
+  <link rel="stylesheet" href="../../style.css">
+  <title>投射運動シミュレーション | Phys-Lab</title>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav" aria-label="サイト内ナビゲーション">
+      <a class="brand" href="../../">
+        <span class="brand-mark" aria-hidden="true">P</span>
+        <span>Phys-Lab</span>
+      </a>
+      <div class="nav-links">
+        <a href="../../#contents">教材を探す</a>
+        <a href="../../slide/">授業用スライド</a>
+        <a href="../../note/">PDFノート</a>
+        <a href="../../tools/">動かせる教材</a>
+        <a href="../../#approach">使い方</a>
+        <a href="../../#status">更新予定</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="section page-section tool-page">
+      <div class="section-head tool-head">
+        <p class="eyebrow">Tools</p>
+        <h1 class="page-title">投射運動シミュレーション</h1>
+        <p class="section-text">
+          初速度と角度を変えながら、軌道、水平到達距離、最高点、飛行時間の変化を確認できます。
+        </p>
+      </div>
+
+      <div class="simulator-shell">
+        <section class="simulator-stage" aria-label="投射運動の表示">
+          <canvas id="projectileCanvas" width="900" height="520"></canvas>
+          <div class="sim-readout" aria-live="polite">
+            <div>
+              <span>飛行時間</span>
+              <strong id="timeOfFlight">0.00 s</strong>
+            </div>
+            <div>
+              <span>水平到達距離</span>
+              <strong id="range">0.0 m</strong>
+            </div>
+            <div>
+              <span>最高点</span>
+              <strong id="maxHeight">0.0 m</strong>
+            </div>
+          </div>
+        </section>
+
+        <aside class="control-panel" aria-label="投射条件の操作">
+          <div class="control-row">
+            <label for="speed">初速度</label>
+            <output id="speedValue" for="speed">24 m/s</output>
+            <input id="speed" type="range" min="5" max="50" step="1" value="24">
+          </div>
+
+          <div class="control-row">
+            <label for="angle">角度</label>
+            <output id="angleValue" for="angle">42°</output>
+            <input id="angle" type="range" min="5" max="85" step="1" value="42">
+          </div>
+
+          <div class="control-row">
+            <label for="gravity">重力加速度</label>
+            <output id="gravityValue" for="gravity">9.8 m/s²</output>
+            <input id="gravity" type="range" min="1.6" max="12" step="0.1" value="9.8">
+          </div>
+
+          <div class="control-row">
+            <label for="xMax">横軸の範囲</label>
+            <output id="xMaxValue" for="xMax">100 m</output>
+            <input id="xMax" type="range" min="20" max="250" step="10" value="100">
+          </div>
+
+          <div class="control-actions">
+            <button class="button primary" id="playPause" type="button">一時停止</button>
+            <button class="button secondary" id="reset" type="button">最初から</button>
+          </div>
+
+          <dl class="formula-summary">
+            <div>
+              <dt>x</dt>
+              <dd>v0 cosθ t</dd>
+            </div>
+            <div>
+              <dt>y</dt>
+              <dd>v0 sinθ t - 1/2 gt²</dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Phys-Lab</span>
+      <a href="./">力学の教材一覧へ戻る</a>
+    </div>
+  </footer>
+
+  <script>
+    const canvas = document.getElementById("projectileCanvas");
+    const ctx = canvas.getContext("2d");
+    const speedInput = document.getElementById("speed");
+    const angleInput = document.getElementById("angle");
+    const gravityInput = document.getElementById("gravity");
+    const xMaxInput = document.getElementById("xMax");
+    const speedValue = document.getElementById("speedValue");
+    const angleValue = document.getElementById("angleValue");
+    const gravityValue = document.getElementById("gravityValue");
+    const xMaxValue = document.getElementById("xMaxValue");
+    const timeOfFlightEl = document.getElementById("timeOfFlight");
+    const rangeEl = document.getElementById("range");
+    const maxHeightEl = document.getElementById("maxHeight");
+    const playPauseButton = document.getElementById("playPause");
+    const resetButton = document.getElementById("reset");
+
+    const state = {
+      elapsed: 0,
+      lastFrame: 0,
+      running: true
+    };
+
+    function getParams() {
+      const speed = Number(speedInput.value);
+      const angleDeg = Number(angleInput.value);
+      const gravity = Number(gravityInput.value);
+      const xMax = Number(xMaxInput.value);
+      const angleRad = angleDeg * Math.PI / 180;
+      const vx = speed * Math.cos(angleRad);
+      const vy = speed * Math.sin(angleRad);
+      const flightTime = (2 * vy) / gravity;
+      const range = vx * flightTime;
+      const maxHeight = (vy * vy) / (2 * gravity);
+
+      return { speed, angleDeg, gravity, xMax, vx, vy, flightTime, range, maxHeight };
+    }
+
+    function positionAt(time, params) {
+      return {
+        x: params.vx * time,
+        y: Math.max(0, params.vy * time - 0.5 * params.gravity * time * time)
+      };
+    }
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.round(rect.width * dpr);
+      canvas.height = Math.round(rect.height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      draw();
+    }
+
+    function drawGrid(width, height, originX, originY) {
+      ctx.strokeStyle = "rgba(22, 32, 31, 0.1)";
+      ctx.lineWidth = 1;
+
+      for (let x = originX; x < width - 22; x += 48) {
+        ctx.beginPath();
+        ctx.moveTo(x, 24);
+        ctx.lineTo(x, originY);
+        ctx.stroke();
+      }
+
+      for (let y = originY; y > 24; y -= 42) {
+        ctx.beginPath();
+        ctx.moveTo(originX, y);
+        ctx.lineTo(width - 22, y);
+        ctx.stroke();
+      }
+    }
+
+    function draw() {
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
+      const params = getParams();
+      const originX = 56;
+      const originY = height - 52;
+      const graphWidth = width - originX - 32;
+      const graphHeight = originY - 30;
+      const scaleX = graphWidth / params.xMax;
+      const scaleY = graphHeight / Math.max(params.maxHeight * 1.25, 8);
+      const currentTime = Math.min(state.elapsed, params.flightTime);
+      const current = positionAt(currentTime, params);
+
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = "#fbfaf6";
+      ctx.fillRect(0, 0, width, height);
+      drawGrid(width, height, originX, originY);
+
+      ctx.strokeStyle = "#16201f";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(originX, 24);
+      ctx.lineTo(originX, originY);
+      ctx.lineTo(width - 22, originY);
+      ctx.stroke();
+
+      ctx.strokeStyle = "#1f7a68";
+      ctx.lineWidth = 4;
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(originX, 24, graphWidth, graphHeight + 28);
+      ctx.clip();
+      ctx.beginPath();
+      const steps = 120;
+      for (let i = 0; i <= steps; i += 1) {
+        const t = params.flightTime * i / steps;
+        const point = positionAt(t, params);
+        const screenX = originX + point.x * scaleX;
+        const screenY = originY - point.y * scaleY;
+        if (i === 0) {
+          ctx.moveTo(screenX, screenY);
+        } else {
+          ctx.lineTo(screenX, screenY);
+        }
+      }
+      ctx.stroke();
+
+      const currentX = originX + current.x * scaleX;
+      const currentY = originY - current.y * scaleY;
+      ctx.fillStyle = "#d8952a";
+      ctx.beginPath();
+      ctx.arc(currentX, currentY, 9, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = "rgba(216, 149, 42, 0.45)";
+      ctx.lineWidth = 2;
+      ctx.setLineDash([7, 7]);
+      ctx.beginPath();
+      ctx.moveTo(currentX, currentY);
+      ctx.lineTo(currentX, originY);
+      ctx.lineTo(originX, originY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
+
+      ctx.fillStyle = "#5b6765";
+      ctx.font = "13px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+      ctx.fillText("高さ y", 12, 28);
+      ctx.fillText(`水平距離 x  0-${params.xMax} m`, width - 162, originY + 32);
+      if (current.x <= params.xMax) {
+        ctx.fillText(`${current.x.toFixed(1)} m`, currentX + 12, originY - 8);
+        ctx.fillText(`${current.y.toFixed(1)} m`, currentX + 12, Math.max(currentY - 12, 36));
+      }
+
+      timeOfFlightEl.textContent = `${params.flightTime.toFixed(2)} s`;
+      rangeEl.textContent = `${params.range.toFixed(1)} m`;
+      maxHeightEl.textContent = `${params.maxHeight.toFixed(1)} m`;
+      speedValue.textContent = `${params.speed} m/s`;
+      angleValue.textContent = `${params.angleDeg}°`;
+      gravityValue.textContent = `${params.gravity.toFixed(1)} m/s²`;
+      xMaxValue.textContent = `${params.xMax} m`;
+    }
+
+    function resetAnimation() {
+      state.elapsed = 0;
+      state.lastFrame = performance.now();
+      draw();
+    }
+
+    function frame(now) {
+      const params = getParams();
+      if (!state.lastFrame) {
+        state.lastFrame = now;
+      }
+
+      if (state.running) {
+        const delta = (now - state.lastFrame) / 1000;
+        state.elapsed += delta;
+        if (state.elapsed > params.flightTime) {
+          state.elapsed = 0;
+        }
+      }
+
+      state.lastFrame = now;
+      draw();
+      requestAnimationFrame(frame);
+    }
+
+    [speedInput, angleInput, gravityInput, xMaxInput].forEach((input) => {
+      input.addEventListener("input", resetAnimation);
+    });
+
+    playPauseButton.addEventListener("click", () => {
+      state.running = !state.running;
+      playPauseButton.textContent = state.running ? "一時停止" : "再生";
+      state.lastFrame = performance.now();
+    });
+
+    resetButton.addEventListener("click", resetAnimation);
+    window.addEventListener("resize", resizeCanvas);
+
+    resizeCanvas();
+    requestAnimationFrame(frame);
+  </script>
+</body>
+</html>

@@ -390,7 +390,9 @@ main {
 
 #projectileCanvas {
   width: 100%;
+  max-width: 100%;
   height: clamp(330px, 54vw, 520px);
+  box-sizing: border-box;
   display: block;
 }
 
@@ -617,6 +619,13 @@ main {
   justify-content: space-between;
   gap: 18px;
   font-size: 0.92rem;
+}
+
+@media (min-width: 861px) {
+  .page-title {
+    max-width: none;
+    white-space: nowrap;
+  }
 }
 
 @media (max-width: 860px) {

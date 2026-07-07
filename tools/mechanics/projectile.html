@@ -79,6 +79,12 @@
             <input id="xMax" type="range" min="20" max="250" step="10" value="100">
           </div>
 
+          <div class="control-row">
+            <label for="yMax">縦軸の範囲</label>
+            <output id="yMaxValue" for="yMax">50 m</output>
+            <input id="yMax" type="range" min="10" max="300" step="10" value="50">
+          </div>
+
           <div class="control-actions">
             <button class="button primary" id="playPause" type="button">一時停止</button>
             <button class="button secondary" id="reset" type="button">最初から</button>
@@ -113,10 +119,12 @@
     const angleInput = document.getElementById("angle");
     const gravityInput = document.getElementById("gravity");
     const xMaxInput = document.getElementById("xMax");
+    const yMaxInput = document.getElementById("yMax");
     const speedValue = document.getElementById("speedValue");
     const angleValue = document.getElementById("angleValue");
     const gravityValue = document.getElementById("gravityValue");
     const xMaxValue = document.getElementById("xMaxValue");
+    const yMaxValue = document.getElementById("yMaxValue");
     const timeOfFlightEl = document.getElementById("timeOfFlight");
     const rangeEl = document.getElementById("range");
     const maxHeightEl = document.getElementById("maxHeight");
@@ -134,6 +142,7 @@
       const angleDeg = Number(angleInput.value);
       const gravity = Number(gravityInput.value);
       const xMax = Number(xMaxInput.value);
+      const yMax = Number(yMaxInput.value);
       const angleRad = angleDeg * Math.PI / 180;
       const vx = speed * Math.cos(angleRad);
       const vy = speed * Math.sin(angleRad);
@@ -141,7 +150,7 @@
       const range = vx * flightTime;
       const maxHeight = (vy * vy) / (2 * gravity);
 
-      return { speed, angleDeg, gravity, xMax, vx, vy, flightTime, range, maxHeight };
+      return { speed, angleDeg, gravity, xMax, yMax, vx, vy, flightTime, range, maxHeight };
     }
 
     function positionAt(time, params) {
@@ -152,10 +161,16 @@
     }
 
     function resizeCanvas() {
-      const rect = canvas.getBoundingClientRect();
+      const stageWidth = canvas.parentElement.clientWidth;
+      const cssWidth = Math.max(280, Math.floor(stageWidth));
+      const cssHeight = Math.round(Math.min(520, Math.max(330, cssWidth * 0.58)));
       const dpr = window.devicePixelRatio || 1;
-      canvas.width = Math.round(rect.width * dpr);
-      canvas.height = Math.round(rect.height * dpr);
+
+      canvas.style.width = "100%";
+      canvas.style.maxWidth = "100%";
+      canvas.style.height = `${cssHeight}px`;
+      canvas.width = Math.round(cssWidth * dpr);
+      canvas.height = Math.round(cssHeight * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       draw();
     }
@@ -188,7 +203,7 @@
       const graphWidth = width - originX - 32;
       const graphHeight = originY - 30;
       const scaleX = graphWidth / params.xMax;
-      const scaleY = graphHeight / Math.max(params.maxHeight * 1.25, 8);
+      const scaleY = graphHeight / params.yMax;
       const currentTime = Math.min(state.elapsed, params.flightTime);
       const current = positionAt(currentTime, params);
 
@@ -246,9 +261,9 @@
 
       ctx.fillStyle = "#5b6765";
       ctx.font = "13px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
-      ctx.fillText("高さ y", 12, 28);
+      ctx.fillText(`高さ y  0-${params.yMax} m`, 12, 28);
       ctx.fillText(`水平距離 x  0-${params.xMax} m`, width - 162, originY + 32);
-      if (current.x <= params.xMax) {
+      if (current.x <= params.xMax && current.y <= params.yMax) {
         ctx.fillText(`${current.x.toFixed(1)} m`, currentX + 12, originY - 8);
         ctx.fillText(`${current.y.toFixed(1)} m`, currentX + 12, Math.max(currentY - 12, 36));
       }
@@ -260,6 +275,7 @@
       angleValue.textContent = `${params.angleDeg}°`;
       gravityValue.textContent = `${params.gravity.toFixed(1)} m/s²`;
       xMaxValue.textContent = `${params.xMax} m`;
+      yMaxValue.textContent = `${params.yMax} m`;
     }
 
     function resetAnimation() {
@@ -287,7 +303,7 @@
       requestAnimationFrame(frame);
     }
 
-    [speedInput, angleInput, gravityInput, xMaxInput].forEach((input) => {
+    [speedInput, angleInput, gravityInput, xMaxInput, yMaxInput].forEach((input) => {
       input.addEventListener("input", resetAnimation);
     });
 

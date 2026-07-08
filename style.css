@@ -595,15 +595,93 @@ main {
   width: min(1120px, calc(100% - 32px));
   margin: 0 auto;
   padding: 46px 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
+  display: grid;
+  gap: 28px;
 }
 
 .status-inner p {
   margin: 0;
   color: var(--muted);
+}
+
+.status-summary {
+  align-self: start;
+  max-width: 860px;
+}
+
+.status-summary .section-title {
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+}
+
+.status-date {
+  margin-top: 14px;
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+
+.status-content {
+  display: grid;
+  gap: 18px;
+  justify-items: center;
+}
+
+.update-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.update-card {
+  min-height: 0;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.update-card:nth-child(3) {
+  grid-column: 1 / -1;
+}
+
+.update-card h3 {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+  line-height: 1.35;
+}
+
+.update-card ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-left: 1.2em;
+  color: var(--muted);
+  font-size: 0.94rem;
+}
+
+.update-card p {
+  font-size: 0.94rem;
+}
+
+.update-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.update-tags span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 5px 10px;
+  border: 1px solid rgba(31, 122, 104, 0.24);
+  border-radius: 999px;
+  color: var(--green-dark);
+  background: rgba(255, 255, 255, 0.74);
+  font-size: 0.88rem;
+  font-weight: 750;
+  line-height: 1.25;
 }
 
 .site-footer {
@@ -665,7 +743,8 @@ main {
   .content-grid,
   .link-grid,
   .lab-panel,
-  .simulator-shell {
+  .simulator-shell,
+  .status-inner {
     grid-template-columns: 1fr;
   }
 
@@ -677,7 +756,6 @@ main {
     order: -1;
   }
 
-  .status-inner,
   .footer-inner {
     align-items: flex-start;
     flex-direction: column;
@@ -715,6 +793,14 @@ main {
 
   .domain-grid {
     grid-template-columns: 1fr;
+  }
+
+  .update-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .update-card:nth-child(3) {
+    grid-column: auto;
   }
 
   .sim-readout {

@@ -34,3 +34,8 @@
 ## リンク集
 
 - 物理の勉強などに役立つWEBページを、見つけ次第随時追加
+
+## Obsidian関連リンク
+<!-- obsidian-links:start -->
+- [[05_Phys-Lab/README|README: Phys-Lab]] - 同じフォルダの関連ノート
+<!-- obsidian-links:end -->

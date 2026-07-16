@@ -102,3 +102,9 @@ HTML ベースのシミュレーションや確認ツールです。力、運動
 - `tools/` に動かせる教材の一覧ページを作成
 - `tools/mechanics/projectile.html` に投射運動シミュレーションを作成
 - 力学・波動・熱力学・電磁気学・原子のカテゴリページを作成
+
+## Obsidian関連リンク
+<!-- obsidian-links:start -->
+- [[05_Phys-Lab/make-plan|Phys-Lab: 教材作成予定]] - 同じフォルダの関連ノート
+- [[05_Phys-Lab/05_Phys-Lab|05_Phys-Lab]] - 同じフォルダの関連ノート
+<!-- obsidian-links:end -->

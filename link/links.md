@@ -24,3 +24,10 @@
 
 ### GeoGebra
 - https://www.geogebra.org/graphing?lang=ja
+
+## Obsidian関連リンク
+<!-- obsidian-links:start -->
+- [[05_Phys-Lab/README|README: Phys-Lab]] - 親子フォルダでつながるノート
+- [[05_Phys-Lab/05_Phys-Lab|05_Phys-Lab]] - 親子フォルダでつながるノート
+- [[05_Phys-Lab/make-plan|Phys-Lab: 教材作成予定]] - 親子フォルダでつながるノート
+<!-- obsidian-links:end -->

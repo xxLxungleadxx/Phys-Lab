@@ -14,5 +14,8 @@
 /playwright-report/
 
 # Local verification documentation (not published)
-/docs/PHASE6_REPORT.md
+/docs/*_REPORT.md
+/docs/*_AUDIT.md
+/docs/*_CHECKLIST.md
+/docs/CHECKLIST.md
 /docs/CLI_BROWSER_TESTING.md

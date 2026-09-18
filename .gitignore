@@ -5,3 +5,14 @@
 /05_Phys-Lab.md
 /make-plan.md
 /link/links.md
+
+# CLI browser testing (development only)
+/node_modules/
+/.playwright-browsers/
+/test-results/
+/test-results-phase6/
+/playwright-report/
+
+# Local verification documentation (not published)
+/docs/PHASE6_REPORT.md
+/docs/CLI_BROWSER_TESTING.md

@@ -1,0 +1,23 @@
+{
+  "name": "phys-lab",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "serve:test": "node scripts/test-server.mjs",
+    "test": "npm run test:offline && npm run test:browser",
+    "test:offline": "node scripts/verify-phase6.mjs",
+    "test:browser": "playwright test",
+    "test:install-browsers": "PLAYWRIGHT_BROWSERS_PATH=.playwright-browsers playwright install chromium firefox webkit",
+    "test:smoke": "playwright test --project=chromium-desktop",
+    "test:list": "playwright test --list",
+    "test:report": "playwright show-report"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.63.0"
+  }
+}

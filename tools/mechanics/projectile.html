@@ -8,6 +8,7 @@
   <title>投射運動シミュレーション | Phys-Lab</title>
 </head>
 <body class="format-layout">
+  <a class="skip-link" href="#main-content">本文へ移動</a>
   <header class="site-header">
     <nav class="nav" aria-label="サイト内ナビゲーション">
       <a class="brand" href="../../">
@@ -23,7 +24,7 @@
     </nav>
   </header>
 
-  <main data-subject="mechanics" data-level="physics-basic" data-type="simulation" data-updated="2026-09-18">
+  <main id="main-content" tabindex="-1" data-subject="mechanics" data-level="physics-basic" data-type="simulation" data-updated="2026-09-18">
     <section class="section page-section tool-page">
       <div class="section-head tool-head">
         <p class="eyebrow">動かす · 力学</p>
@@ -36,7 +37,8 @@
 
       <p class="catalog-note"><a href="../../mechanics/">力学の全教材を見る</a></p>
       <p class="model-note">モデルの前提：物体を質点として扱い、空気抵抗を無視します。重力加速度は一定で、投射位置と同じ高さに着地する運動を考えます。</p>
-      <p class="unit-updated">教材案内更新日：<time datetime="2026-09-18">2026年9月18日</time>（計算処理は変更していません）</p>
+      <p class="unit-updated">更新日：<time datetime="2026-09-18">2026年9月18日</time>（投射角の範囲と動きを抑える設定への対応を更新）</p>
+      <p class="section-text">角度0°では、地面の高さから水平に投射するこのモデルの飛行時間は0秒です。動きを抑える設定では静止した軌跡から始まり、再生ボタンで動かせます。</p>
 
       <div class="simulator-shell">
         <section class="simulator-stage" aria-label="投射運動の表示">
@@ -67,7 +69,7 @@
           <div class="control-row">
             <label for="angle">角度</label>
             <output id="angleValue" for="angle">42°</output>
-            <input id="angle" type="range" min="5" max="85" step="1" value="42">
+            <input id="angle" type="range" min="0" max="90" step="1" value="42">
           </div>
 
           <div class="control-row">
@@ -89,7 +91,7 @@
           </div>
 
           <div class="control-actions">
-            <button class="button primary" id="playPause" type="button">一時停止</button>
+            <button class="button primary" id="playPause" type="button" aria-pressed="false">再生</button>
             <button class="button secondary" id="reset" type="button">最初から</button>
           </div>
 
@@ -142,11 +144,19 @@
     const playPauseButton = document.getElementById("playPause");
     const resetButton = document.getElementById("reset");
 
+    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
     const state = {
       elapsed: 0,
       lastFrame: 0,
-      running: true
+      running: !motionPreference.matches
     };
+
+    function updatePlaybackButton() {
+      playPauseButton.textContent = state.running ? "一時停止" : "再生";
+      playPauseButton.setAttribute("aria-pressed", String(state.running));
+    }
+
+    updatePlaybackButton();
 
     function getParams() {
       const speed = Number(speedInput.value);
@@ -155,8 +165,8 @@
       const xMax = Number(xMaxInput.value);
       const yMax = Number(yMaxInput.value);
       const angleRad = angleDeg * Math.PI / 180;
-      const vx = speed * Math.cos(angleRad);
-      const vy = speed * Math.sin(angleRad);
+      const vx = angleDeg === 90 ? 0 : speed * Math.cos(angleRad);
+      const vy = angleDeg === 0 ? 0 : speed * Math.sin(angleRad);
       const flightTime = (2 * vy) / gravity;
       const range = vx * flightTime;
       const maxHeight = (vy * vy) / (2 * gravity);
@@ -173,9 +183,9 @@
 
     function resizeCanvas() {
       const stageWidth = canvas.parentElement.clientWidth;
-      const cssWidth = Math.max(280, Math.floor(stageWidth));
+      const cssWidth = Math.max(1, Math.floor(stageWidth));
       const cssHeight = Math.round(Math.min(520, Math.max(330, cssWidth * 0.58)));
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
 
       canvas.style.width = "100%";
       canvas.style.maxWidth = "100%";
@@ -279,14 +289,18 @@
         ctx.fillText(`${current.y.toFixed(1)} m`, currentX + 12, Math.max(currentY - 12, 36));
       }
 
-      timeOfFlightEl.textContent = `${params.flightTime.toFixed(2)} s`;
-      rangeEl.textContent = `${params.range.toFixed(1)} m`;
-      maxHeightEl.textContent = `${params.maxHeight.toFixed(1)} m`;
-      speedValue.textContent = `${params.speed} m/s`;
-      angleValue.textContent = `${params.angleDeg}°`;
-      gravityValue.textContent = `${params.gravity.toFixed(1)} m/s²`;
-      xMaxValue.textContent = `${params.xMax} m`;
-      yMaxValue.textContent = `${params.yMax} m`;
+      setTextIfChanged(timeOfFlightEl, `${params.flightTime.toFixed(2)} s`);
+      setTextIfChanged(rangeEl, `${params.range.toFixed(1)} m`);
+      setTextIfChanged(maxHeightEl, `${params.maxHeight.toFixed(1)} m`);
+      setTextIfChanged(speedValue, `${params.speed} m/s`);
+      setTextIfChanged(angleValue, `${params.angleDeg}°`);
+      setTextIfChanged(gravityValue, `${params.gravity.toFixed(1)} m/s²`);
+      setTextIfChanged(xMaxValue, `${params.xMax} m`);
+      setTextIfChanged(yMaxValue, `${params.yMax} m`);
+    }
+
+    function setTextIfChanged(element, text) {
+      if (element.textContent !== text) element.textContent = text;
     }
 
     function resetAnimation() {
@@ -320,12 +334,20 @@
 
     playPauseButton.addEventListener("click", () => {
       state.running = !state.running;
-      playPauseButton.textContent = state.running ? "一時停止" : "再生";
+      updatePlaybackButton();
       state.lastFrame = performance.now();
     });
 
     resetButton.addEventListener("click", resetAnimation);
     window.addEventListener("resize", resizeCanvas);
+    motionPreference.addEventListener("change", (event) => {
+      if (event.matches) {
+        state.running = false;
+        state.lastFrame = performance.now();
+        updatePlaybackButton();
+        draw();
+      }
+    });
 
     resizeCanvas();
     requestAnimationFrame(frame);

@@ -11,30 +11,35 @@ const types = {
   ".js": "text/javascript; charset=utf-8", ".pdf": "application/pdf",
   ".png": "image/png", ".svg": "image/svg+xml", ".ico": "image/x-icon"
 };
+const notFoundPage = await fs.readFile(path.join(root, "404.html"));
+function notFound(req, res) {
+  res.writeHead(404, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" });
+  res.end(req.method === "HEAD" ? undefined : notFoundPage);
+}
 const server = http.createServer(async (req, res) => {
   try {
     if (!["GET", "HEAD"].includes(req.method)) { res.writeHead(405).end(); return; }
     const pathname = decodeURIComponent(new URL(req.url, "http://127.0.0.1").pathname);
-    if (!pathname.startsWith(prefix)) { res.writeHead(404).end(); return; }
+    if (!pathname.startsWith(prefix)) { notFound(req, res); return; }
     let relative = pathname.slice(prefix.length);
     const publicDirectories = ["assets", "slide", "note", "link", "tools", "mechanics", "thermodynamics", "waves", "electromagnetism", "atomic"];
     if (relative.includes("/") && !publicDirectories.includes(relative.split("/")[0])) {
-      res.writeHead(404).end(); return;
+      notFound(req, res); return;
     }
     if (relative.split("/").some(part => part.startsWith(".") || part === "..")) {
-      res.writeHead(404).end(); return;
+      notFound(req, res); return;
     }
     if (pathname.endsWith("/")) relative += "index.html";
     const target = path.resolve(root, relative);
     if (!target.startsWith(root + path.sep) || !types[path.extname(target)]) {
-      res.writeHead(404).end(); return;
+      notFound(req, res); return;
     }
     const realTarget = await fs.realpath(target);
-    if (!realTarget.startsWith(root + path.sep)) { res.writeHead(404).end(); return; }
+    if (!realTarget.startsWith(root + path.sep)) { notFound(req, res); return; }
     const data = await fs.readFile(realTarget);
     res.writeHead(200, { "Content-Type": types[path.extname(target)], "Cache-Control": "no-store" });
     res.end(req.method === "HEAD" ? undefined : data);
-  } catch { res.writeHead(404).end(); }
+  } catch { notFound(req, res); }
 });
 server.listen(4173, "127.0.0.1", () => console.log("Test site: http://127.0.0.1:4173/Phys-Lab/"));
 for (const signal of ["SIGINT", "SIGTERM"]) process.on(signal, () => server.close(() => process.exit(0)));

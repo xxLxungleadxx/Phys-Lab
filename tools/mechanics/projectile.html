@@ -1,11 +1,26 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" prefix="og: https://ogp.me/ns#">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="投射運動をブラウザで操作して確認できる Phys-Lab のシミュレーション教材です。">
   <link rel="stylesheet" href="../../style.css">
   <title>投射運動シミュレーション | Phys-Lab</title>
+  <link rel="icon" type="image/svg+xml" href="/Phys-Lab/assets/favicon.svg">
+  <link rel="canonical" href="https://xxlxungleadxx.github.io/Phys-Lab/tools/mechanics/projectile.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Phys-Lab">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:title" content="投射運動シミュレーション | Phys-Lab">
+  <meta property="og:description" content="投射運動をブラウザで操作して確認できる Phys-Lab のシミュレーション教材です。">
+  <meta property="og:url" content="https://xxlxungleadxx.github.io/Phys-Lab/tools/mechanics/projectile.html">
+  <meta property="og:image" content="https://xxlxungleadxx.github.io/Phys-Lab/assets/hero-physics-lab.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1672">
+  <meta property="og:image:height" content="941">
+  <meta property="og:image:alt" content="物理実験の器具が並ぶ実験室">
+  <meta name="twitter:card" content="summary_large_image">
+  <script src="/Phys-Lab/assets/focus-visibility.js" defer></script>
 </head>
 <body class="format-layout">
   <a class="skip-link" href="#main-content">本文へ移動</a>
@@ -284,10 +299,14 @@
       ctx.font = "13px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
       ctx.fillText(`高さ y  0-${params.yMax} m`, 12, 28);
       ctx.fillText(`水平距離 x  0-${params.xMax} m`, width - 162, originY + 32);
-      if (current.x <= params.xMax && current.y <= params.yMax) {
-        ctx.fillText(`${current.x.toFixed(1)} m`, currentX + 12, originY - 8);
-        ctx.fillText(`${current.y.toFixed(1)} m`, currentX + 12, Math.max(currentY - 12, 36));
-      }
+      // A fixed two-line readout avoids overlapping labels at launch/landing
+      // and keeps coordinates visible when the object leaves the axis range.
+      const readoutLeft = width - 144;
+      ctx.fillStyle = "rgba(251, 250, 246, 0.94)";
+      ctx.fillRect(readoutLeft - 8, 36, 136, 46);
+      ctx.fillStyle = "#34413f";
+      ctx.fillText(`x = ${current.x.toFixed(1)} m`, readoutLeft, 54);
+      ctx.fillText(`y = ${current.y.toFixed(1)} m`, readoutLeft, 74);
 
       setTextIfChanged(timeOfFlightEl, `${params.flightTime.toFixed(2)} s`);
       setTextIfChanged(rangeEl, `${params.range.toFixed(1)} m`);

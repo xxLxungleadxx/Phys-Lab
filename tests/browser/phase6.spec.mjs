@@ -9,6 +9,8 @@ test("compact hero, anchor clearance, and keyboard focus visibility", async ({ p
   await page.keyboard.press(key);
   await expect(page.locator(".skip-link")).toBeFocused();
   for (let i = 0; i < 14; i++) {
+    // Focus scrolling finishes on the next frame; do not measure midway.
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(resolve)));
     const focus = await page.evaluate(() => {
       const el = document.activeElement;
       const rect = el.getBoundingClientRect();
@@ -36,6 +38,46 @@ test("compact hero, anchor clearance, and keyboard focus visibility", async ({ p
       header: document.querySelector("header").getBoundingClientRect().bottom
     }), id);
     expect(bounds.target, id).toBeGreaterThanOrEqual(bounds.header - 1);
+  }
+});
+
+test("number badges are centered and canvas coordinate labels do not overlap", async ({ page }, info) => {
+  await page.addInitScript(() => {
+    const original = CanvasRenderingContext2D.prototype.fillText;
+    window.coordinateLabels = {};
+    CanvasRenderingContext2D.prototype.fillText = function(text, x, y, ...args) {
+      if (/^[xy] = /.test(text)) {
+        const metrics = this.measureText(text);
+        window.coordinateLabels[text[0]] = { text, left: x, right: x + metrics.width,
+          top: y - metrics.actualBoundingBoxAscent, bottom: y + metrics.actualBoundingBoxDescent };
+      }
+      return original.call(this, text, x, y, ...args);
+    };
+  });
+  await page.goto("./");
+  for (const badge of await page.locator(".principles .number").all()) {
+    const style = await badge.evaluate(el => {
+      const s = getComputedStyle(el);
+      return { display: s.display, color: s.color, align: s.alignItems, justify: s.justifyItems };
+    });
+    expect(style).toEqual({ display: "grid", color: "rgb(255, 255, 255)", align: "center", justify: "center" });
+  }
+  await page.locator("#approach").screenshot({ path: info.outputPath("number-badges.png") });
+  await page.goto("tools/mechanics/projectile.html");
+  for (const angle of [0, 42, 90]) {
+    await page.locator("#angle").fill(String(angle));
+    const labels = await page.evaluate(() => ({ ...window.coordinateLabels,
+      width: document.querySelector("canvas").clientWidth, height: document.querySelector("canvas").clientHeight }));
+    expect(labels.x.text).toBe("x = 0.0 m");
+    expect(labels.y.text).toBe("y = 0.0 m");
+    expect(labels.x.bottom).toBeLessThan(labels.y.top);
+    for (const rect of [labels.x, labels.y]) {
+      expect(rect.left).toBeGreaterThanOrEqual(0);
+      expect(rect.right).toBeLessThanOrEqual(labels.width);
+      expect(rect.top).toBeGreaterThanOrEqual(0);
+      expect(rect.bottom).toBeLessThanOrEqual(labels.height);
+    }
+    await page.locator("canvas").screenshot({ path: info.outputPath("coordinates-" + angle + ".png") });
   }
 });
 

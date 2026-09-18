@@ -414,6 +414,12 @@ main {
   scroll-margin-top: 140px;
 }
 
+.error-page .page-title {
+  white-space: normal;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  line-height: 1.2;
+}
+
 /* 形式別一覧と既存教材を単元導線へ接続する共通UI。 */
 .catalog-units,
 .catalog-note {
@@ -785,7 +791,7 @@ main {
   line-height: 1.35;
 }
 
-.principles span {
+.principles span:not(.number) {
   display: block;
   margin-top: 4px;
   color: var(--muted);

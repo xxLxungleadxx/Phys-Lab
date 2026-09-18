@@ -37,7 +37,7 @@ test("all internal navigation and assets respond under the project prefix", asyn
   const urls = new Set();
   for (const route of routes) {
     await page.goto(route || "./");
-    const refs = await page.locator("a[href], link[rel=stylesheet], img[src]").evaluateAll(nodes =>
+    const refs = await page.locator("a[href], link[rel=stylesheet], img[src], script[src]").evaluateAll(nodes =>
       nodes.map(node => node.href || node.src).filter(Boolean));
     for (const ref of refs) {
       const url = new URL(ref);

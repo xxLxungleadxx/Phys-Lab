@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "serve:test": "node scripts/test-server.mjs",
-    "test": "npm run test:offline && npm run test:browser",
+    "test": "npm run test:static && npm run test:offline && npm run test:browser",
+    "test:static": "node scripts/validate-site.mjs && node --test tests/unit/*.test.mjs",
+    "test:external-links": "node scripts/check-external-links.mjs",
     "test:offline": "node scripts/verify-phase6.mjs",
     "test:browser": "playwright test",
     "test:install-browsers": "PLAYWRIGHT_BROWSERS_PATH=.playwright-browsers playwright install chromium firefox webkit",
@@ -14,10 +16,16 @@
     "test:report": "playwright show-report"
   },
   "engines": {
-    "node": ">=22"
+    "node": "^22.22.0 || >=24.8.0"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",
-    "@playwright/test": "1.63.0"
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.63.0",
+    "eslint": "10.10.0",
+    "globals": "17.12.0",
+    "html-validate": "11.16.0",
+    "stylelint": "17.15.0",
+    "yaml": "2.9.1"
   }
 }

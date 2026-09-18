@@ -13,6 +13,7 @@ test("sharing metadata is page-specific with valid local assets", async ({ page,
     const title = await page.title();
     expect(titles.has(title)).toBe(false);
     titles.add(title);
+    if (!route) await expect(page.locator(".formula span").nth(2)).toHaveText("Q = mcΔT");
     const metadata = async property => page.locator('meta[property="' + property + '"]').getAttribute("content");
     expect(await metadata("og:title")).toBe(title);
     expect(await metadata("og:description")).toBe(await page.locator('meta[name="description"]').getAttribute("content"));

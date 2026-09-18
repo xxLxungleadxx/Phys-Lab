@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="../style.css">
   <title>授業用スライド | Phys-Lab</title>
 </head>
-<body>
+<body class="format-layout">
   <header class="site-header">
     <nav class="nav" aria-label="サイト内ナビゲーション">
       <a class="brand" href="../">
@@ -15,12 +15,10 @@
         <span>Phys-Lab</span>
       </a>
       <div class="nav-links">
-        <a href="../#contents">教材を探す</a>
-        <a href="../slide/">授業用スライド</a>
-        <a href="../note/">PDFノート</a>
-        <a href="../tools/">動かせる教材</a>
+        <a href="../#subjects">単元から探す</a>
+        <a href="../#contents">教材から探す</a>
         <a href="../#approach">使い方</a>
-        <a href="../#status">更新予定</a>
+        <a href="../#status">更新情報</a>
       </div>
     </nav>
   </header>
@@ -28,40 +26,53 @@
   <main>
     <section class="section page-section">
       <div class="section-head">
-        <p class="eyebrow">Slides</p>
+        <p class="eyebrow">見る</p>
         <h1 class="page-title">授業用スライド</h1>
         <p class="section-text">
           授業で扱った図、説明、演習の流れを見返すためのページです。単元ごとのスライドPDFを開けます。
         </p>
       </div>
+      <nav class="unit-nav catalog-units" aria-label="単元別の教材へ">
+        <a href="../mechanics/">力学</a>
+        <a href="../thermodynamics/">熱</a>
+        <a href="../waves/">波</a>
+        <a href="../electromagnetism/">電磁気</a>
+        <a href="../atomic/">原子</a>
+      </nav>
       <div class="content-grid">
-        <a class="content-card" href="phys/phys_0-0.pdf">
-          <h3>高校物理 準備編</h3>
+        <a class="content-card" href="phys/phys_0-0.pdf" data-subject="general" data-level="physics-basic" data-type="slide">
+          <span class="level-label">物理基礎</span>
+          <h2>高校物理 準備編</h2>
           <p>単位、数値、文字式など、物理を学ぶ前に確認しておきたい数学的準備。</p>
           <span class="text-link">PDFを開く</span>
         </a>
-        <a class="content-card" href="phys/phys_1-01.pdf">
-          <h3>力学基礎編 1</h3>
+        <a class="content-card" href="phys/phys_1-01.pdf" data-subject="mechanics" data-level="physics-basic" data-type="slide">
+          <span class="level-label">物理基礎</span>
+          <h2>力学基礎編 1</h2>
           <p>位置、速度、加速度、落体運動を扱う力学の導入スライド。</p>
           <span class="text-link">PDFを開く</span>
         </a>
-        <a class="content-card" href="phys/phys_1-02.pdf">
-          <h3>力学基礎編 2</h3>
+        <a class="content-card" href="phys/phys_1-02.pdf" data-subject="mechanics" data-level="physics-basic" data-type="slide">
+          <span class="level-label">物理基礎</span>
+          <h2>力学基礎編 2</h2>
           <p>力、運動の法則、仕事とエネルギーを扱う力学の基礎スライド。</p>
           <span class="text-link">PDFを開く</span>
         </a>
-        <a class="content-card" href="phys/phys_1-03.pdf">
-          <h3>熱力学基礎編</h3>
+        <a class="content-card" href="phys/phys_1-03.pdf" data-subject="thermodynamics" data-level="physics-basic" data-type="slide">
+          <span class="level-label">物理基礎</span>
+          <h2>熱力学基礎編</h2>
           <p>熱、熱と物質、熱と仕事を扱う熱力学の基礎スライド。</p>
           <span class="text-link">PDFを開く</span>
         </a>
-        <a class="content-card" href="phys/phys_1-04.pdf">
-          <h3>波動基礎編</h3>
+        <a class="content-card" href="phys/phys_1-04.pdf" data-subject="waves" data-level="physics-basic" data-type="slide">
+          <span class="level-label">物理基礎</span>
+          <h2>波動基礎編</h2>
           <p>波の考え方、波の伝わり方、音を扱う波動の基礎スライド。</p>
           <span class="text-link">PDFを開く</span>
         </a>
-        <a class="content-card" href="phys/phys_1-05.pdf">
-          <h3>電磁気基礎編</h3>
+        <a class="content-card" href="phys/phys_1-05.pdf" data-subject="electromagnetism" data-level="physics-basic" data-type="slide">
+          <span class="level-label">物理基礎</span>
+          <h2>電磁気基礎編</h2>
           <p>電気と磁気の基礎事項を扱う電磁気の導入スライド。</p>
           <span class="text-link">PDFを開く</span>
         </a>
@@ -71,7 +82,7 @@
 
   <footer class="site-footer">
     <div class="footer-inner">
-      <span>Phys-Lab</span>
+      <span>高校物理の学習支援を目的とした、個人運営の公開教材サイトです。</span>
       <a href="../">トップへ戻る</a>
     </div>
   </footer>

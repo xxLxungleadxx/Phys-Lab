@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="../../style.css">
   <title>力学のシミュレーション | Phys-Lab</title>
 </head>
-<body>
+<body class="format-layout">
   <header class="site-header">
     <nav class="nav" aria-label="サイト内ナビゲーション">
       <a class="brand" href="../../">
@@ -15,12 +15,10 @@
         <span>Phys-Lab</span>
       </a>
       <div class="nav-links">
-        <a href="../../#contents">教材を探す</a>
-        <a href="../../slide/">授業用スライド</a>
-        <a href="../../note/">PDFノート</a>
-        <a href="../../tools/">動かせる教材</a>
+        <a href="../../#subjects">単元から探す</a>
+        <a href="../../#contents">教材から探す</a>
         <a href="../../#approach">使い方</a>
-        <a href="../../#status">更新予定</a>
+        <a href="../../#status">更新情報</a>
       </div>
     </nav>
   </header>
@@ -34,9 +32,11 @@
           運動、力、仕事とエネルギー、運動量などを操作しながら確認できる教材を置くページです。
         </p>
       </div>
+      <p class="catalog-note"><a href="../../mechanics/">力学のノート・スライドも含めた教材一覧へ</a></p>
       <div class="content-grid">
-        <a class="content-card" href="projectile.html">
-          <h3>投射運動シミュレーション</h3>
+        <a class="content-card" href="projectile.html" data-subject="mechanics" data-level="physics-basic" data-type="simulation">
+          <span class="level-label">物理基礎</span>
+          <h2>投射運動シミュレーション</h2>
           <p>初速度と角度を変えながら、軌道、水平到達距離、最高点、飛行時間の変化を確認できます。</p>
           <span class="text-link">シミュレーションを開く</span>
         </a>
@@ -46,7 +46,7 @@
 
   <footer class="site-footer">
     <div class="footer-inner">
-      <span>Phys-Lab</span>
+      <span>高校物理の学習支援を目的とした、個人運営の公開教材サイトです。</span>
       <a href="../">動かせる教材一覧へ戻る</a>
     </div>
   </footer>

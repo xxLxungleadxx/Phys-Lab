@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="../../style.css">
   <title>投射運動シミュレーション | Phys-Lab</title>
 </head>
-<body>
+<body class="format-layout">
   <header class="site-header">
     <nav class="nav" aria-label="サイト内ナビゲーション">
       <a class="brand" href="../../">
@@ -15,29 +15,32 @@
         <span>Phys-Lab</span>
       </a>
       <div class="nav-links">
-        <a href="../../#contents">教材を探す</a>
-        <a href="../../slide/">授業用スライド</a>
-        <a href="../../note/">PDFノート</a>
-        <a href="../../tools/">動かせる教材</a>
+        <a href="../../#subjects">単元から探す</a>
+        <a href="../../#contents">教材から探す</a>
         <a href="../../#approach">使い方</a>
-        <a href="../../#status">更新予定</a>
+        <a href="../../#status">更新情報</a>
       </div>
     </nav>
   </header>
 
-  <main>
+  <main data-subject="mechanics" data-level="physics-basic" data-type="simulation" data-updated="2026-09-18">
     <section class="section page-section tool-page">
       <div class="section-head tool-head">
-        <p class="eyebrow">Tools</p>
+        <p class="eyebrow">動かす · 力学</p>
+        <span class="level-label">物理基礎</span>
         <h1 class="page-title">投射運動シミュレーション</h1>
         <p class="section-text">
           初速度と角度を変えながら、軌道、水平到達距離、最高点、飛行時間の変化を確認できます。
         </p>
       </div>
 
+      <p class="catalog-note"><a href="../../mechanics/">力学の全教材を見る</a></p>
+      <p class="model-note">モデルの前提：物体を質点として扱い、空気抵抗を無視します。重力加速度は一定で、投射位置と同じ高さに着地する運動を考えます。</p>
+      <p class="unit-updated">教材案内更新日：<time datetime="2026-09-18">2026年9月18日</time>（計算処理は変更していません）</p>
+
       <div class="simulator-shell">
         <section class="simulator-stage" aria-label="投射運動の表示">
-          <canvas id="projectileCanvas" width="900" height="520"></canvas>
+          <canvas id="projectileCanvas" width="900" height="520" role="img" aria-label="投射された物体の軌跡。投射条件は操作パネル、飛行時間・水平到達距離・最高点は下の数値表示で確認できます。">投射運動の軌跡を表示します。主要な結果は下の数値表示で確認できます。</canvas>
           <div class="sim-readout" aria-live="polite">
             <div>
               <span>飛行時間</span>
@@ -103,12 +106,20 @@
         </aside>
       </div>
     </section>
+    <section class="section" aria-labelledby="projectile-related">
+      <h2 class="section-title" id="projectile-related">関連教材</h2>
+      <ul class="unit-related">
+        <li><a href="../../mechanics/">力学の教材一覧へ</a></li>
+        <li><a href="../../note/phys/phys-hs_chap1.pdf">力学ノートを読む（PDF）</a></li>
+        <li><a href="../../slide/phys/phys_1-01.pdf">力学基礎編1を見る（PDF）</a></li>
+      </ul>
+    </section>
   </main>
 
   <footer class="site-footer">
     <div class="footer-inner">
-      <span>Phys-Lab</span>
-      <a href="./">力学の教材一覧へ戻る</a>
+      <span>高校物理の学習支援を目的とした、個人運営の公開教材サイトです。</span>
+      <a href="./">力学シミュレーション一覧へ戻る</a>
     </div>
   </footer>
 

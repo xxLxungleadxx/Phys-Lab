@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="../style.css">
   <title>動かせる教材 | Phys-Lab</title>
 </head>
-<body>
+<body class="format-layout">
   <header class="site-header">
     <nav class="nav" aria-label="サイト内ナビゲーション">
       <a class="brand" href="../">
@@ -15,12 +15,10 @@
         <span>Phys-Lab</span>
       </a>
       <div class="nav-links">
-        <a href="../#contents">教材を探す</a>
-        <a href="../slide/">授業用スライド</a>
-        <a href="../note/">PDFノート</a>
-        <a href="../tools/">動かせる教材</a>
+        <a href="../#subjects">単元から探す</a>
+        <a href="../#contents">教材から探す</a>
         <a href="../#approach">使い方</a>
-        <a href="../#status">更新予定</a>
+        <a href="../#status">更新情報</a>
       </div>
     </nav>
   </header>
@@ -34,36 +32,48 @@
           グラフ、シミュレーション、確認ツールなど、ブラウザで操作できる教材を置くページです。
         </p>
       </div>
+      <nav class="unit-nav catalog-units" aria-label="単元別の教材へ">
+        <a href="../mechanics/">力学</a>
+        <a href="../thermodynamics/">熱</a>
+        <a href="../waves/">波</a>
+        <a href="../electromagnetism/">電磁気</a>
+        <a href="../atomic/">原子</a>
+      </nav>
       <div class="domain-grid" aria-label="動かせる教材一覧">
         <article class="link-card">
           <p class="link-category">力学</p>
-          <h3>力学のシミュレーション</h3>
+          <h2>力学のシミュレーション</h2>
           <p>運動、力、仕事とエネルギー、運動量などのシミュレーションをまとめます。</p>
-          <a class="text-link" href="mechanics/">分野を開く</a>
+          <a class="text-link" href="mechanics/">シミュレーション一覧へ</a>
+          <a class="catalog-unit-link" href="../mechanics/">力学の全教材を見る</a>
         </article>
         <article class="link-card">
           <p class="link-category">熱力学</p>
-          <h3>熱力学のシミュレーション</h3>
+          <h2>熱力学のシミュレーション</h2>
           <p>熱、温度、気体、熱機関などのシミュレーションをまとめます。</p>
-          <a class="text-link" href="thermodynamics/">分野を開く</a>
+          <a class="text-link" href="thermodynamics/">シミュレーション一覧へ</a>
+          <a class="catalog-unit-link" href="../thermodynamics/">熱の全教材を見る</a>
         </article>
         <article class="link-card">
           <p class="link-category">波動</p>
-          <h3>波動のシミュレーション</h3>
+          <h2>波動のシミュレーション</h2>
           <p>波の重ね合わせ、干渉、音、光などのシミュレーションをまとめます。</p>
-          <a class="text-link" href="waves/">分野を開く</a>
+          <a class="text-link" href="waves/">シミュレーション一覧へ</a>
+          <a class="catalog-unit-link" href="../waves/">波の全教材を見る</a>
         </article>
         <article class="link-card">
           <p class="link-category">電磁気学</p>
-          <h3>電磁気学のシミュレーション</h3>
+          <h2>電磁気学のシミュレーション</h2>
           <p>電場、磁場、回路、電磁誘導などのシミュレーションをまとめます。</p>
-          <a class="text-link" href="electromagnetism/">分野を開く</a>
+          <a class="text-link" href="electromagnetism/">シミュレーション一覧へ</a>
+          <a class="catalog-unit-link" href="../electromagnetism/">電磁気の全教材を見る</a>
         </article>
         <article class="link-card">
           <p class="link-category">原子</p>
-          <h3>原子のシミュレーション</h3>
+          <h2>原子のシミュレーション</h2>
           <p>光電効果、原子模型、放射線などのシミュレーションをまとめます。</p>
-          <a class="text-link" href="atomic/">分野を開く</a>
+          <a class="text-link" href="atomic/">シミュレーション一覧へ</a>
+          <a class="catalog-unit-link" href="../atomic/">原子の全教材を見る</a>
         </article>
       </div>
     </section>
@@ -71,7 +81,7 @@
 
   <footer class="site-footer">
     <div class="footer-inner">
-      <span>Phys-Lab</span>
+      <span>高校物理の学習支援を目的とした、個人運営の公開教材サイトです。</span>
       <a href="../">トップへ戻る</a>
     </div>
   </footer>

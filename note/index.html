@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="../style.css">
   <title>PDFノート | Phys-Lab</title>
 </head>
-<body>
+<body class="format-layout">
   <header class="site-header">
     <nav class="nav" aria-label="サイト内ナビゲーション">
       <a class="brand" href="../">
@@ -15,12 +15,10 @@
         <span>Phys-Lab</span>
       </a>
       <div class="nav-links">
-        <a href="../#contents">教材を探す</a>
-        <a href="../slide/">授業用スライド</a>
-        <a href="../note/">PDFノート</a>
-        <a href="../tools/">動かせる教材</a>
+        <a href="../#subjects">単元から探す</a>
+        <a href="../#contents">教材から探す</a>
         <a href="../#approach">使い方</a>
-        <a href="../#status">更新予定</a>
+        <a href="../#status">更新情報</a>
       </div>
     </nav>
   </header>
@@ -28,48 +26,62 @@
   <main>
     <section class="section page-section">
       <div class="section-head">
-        <p class="eyebrow">PDF Notes</p>
+        <p class="eyebrow">読む</p>
         <h1 class="page-title">PDFノート</h1>
         <p class="section-text">
           単元ごとに読むノートと、学習中に参照する補助資料を分けて置いています。
           授業の復習には章別ノート、問題演習中の確認には公式まとめや考え方の資料を使えます。
         </p>
       </div>
+      <nav class="unit-nav catalog-units" aria-label="単元別の教材へ">
+        <a href="../mechanics/">力学</a>
+        <a href="../thermodynamics/">熱</a>
+        <a href="../waves/">波</a>
+        <a href="../electromagnetism/">電磁気</a>
+        <a href="../atomic/">原子</a>
+      </nav>
       <div class="link-list" aria-label="PDFノート一覧">
         <section class="link-group" aria-labelledby="main-notes">
           <h2 id="main-notes">単元ノート</h2>
           <div class="content-grid">
-            <a class="content-card" href="phys/phys-hs.pdf">
+            <a class="content-card" href="phys/phys-hs.pdf" data-subject="general" data-level="physics-basic physics" data-type="note">
+          <span class="level-label">物理基礎・物理</span>
               <h3>高校物理ノート 全体版</h3>
               <p>高校物理ノートをまとめて確認できる全体版 PDF です。通読や単元をまたいだ復習に使えます。</p>
               <span class="text-link">PDFを開く</span>
             </a>
-            <a class="content-card" href="phys/phys-hs_chap0.pdf">
+            <a class="content-card" href="phys/phys-hs_chap0.pdf" data-subject="general" data-level="physics-basic physics" data-type="note">
+          <span class="level-label">物理基礎・物理</span>
               <h3>第0章 物理を学ぶ準備</h3>
               <p>単位、文字式、グラフ、計算の見方など、物理に入る前の準備を確認します。</p>
               <span class="text-link">PDFを開く</span>
             </a>
-            <a class="content-card" href="phys/phys-hs_chap1.pdf">
+            <a class="content-card" href="phys/phys-hs_chap1.pdf" data-subject="mechanics" data-level="physics-basic physics" data-type="note">
+          <span class="level-label">物理基礎・物理</span>
               <h3>第1章 力学</h3>
               <p>運動の表し方、力、運動方程式、エネルギーなど、力学の基礎を整理します。</p>
               <span class="text-link">PDFを開く</span>
             </a>
-            <a class="content-card" href="phys/phys-hs_chap2.pdf">
+            <a class="content-card" href="phys/phys-hs_chap2.pdf" data-subject="thermodynamics" data-level="physics-basic physics" data-type="note">
+          <span class="level-label">物理基礎・物理</span>
               <h3>第2章 熱</h3>
               <p>温度、熱量、状態変化、熱と仕事の関係など、熱分野の基本事項を確認します。</p>
               <span class="text-link">PDFを開く</span>
             </a>
-            <a class="content-card" href="phys/phys-hs_chap3.pdf">
+            <a class="content-card" href="phys/phys-hs_chap3.pdf" data-subject="waves" data-level="physics-basic physics" data-type="note">
+          <span class="level-label">物理基礎・物理</span>
               <h3>第3章 波</h3>
               <p>波の表し方、重ね合わせ、音、光など、波動分野の考え方を整理します。</p>
               <span class="text-link">PDFを開く</span>
             </a>
-            <a class="content-card" href="phys/phys-hs_chap4.pdf">
+            <a class="content-card" href="phys/phys-hs_chap4.pdf" data-subject="electromagnetism" data-level="physics-basic physics" data-type="note">
+          <span class="level-label">物理基礎・物理</span>
               <h3>第4章 電磁気</h3>
               <p>電場、電位、電流、磁場、電磁誘導など、電磁気分野の要点を確認します。</p>
               <span class="text-link">PDFを開く</span>
             </a>
-            <a class="content-card" href="phys/phys-hs_chap5.pdf">
+            <a class="content-card" href="phys/phys-hs_chap5.pdf" data-subject="atomic" data-level="physics" data-type="note">
+          <span class="level-label">物理</span>
               <h3>第5章 原子</h3>
               <p>電子、光、原子核など、原子分野の基本事項と考え方を整理します。</p>
               <span class="text-link">PDFを開く</span>
@@ -80,12 +92,14 @@
         <section class="link-group" aria-labelledby="reference-notes">
           <h2 id="reference-notes">確認・補助資料</h2>
           <div class="content-grid">
-            <a class="content-card" href="phys/phys-formula.pdf">
+            <a class="content-card" href="phys/phys-formula.pdf" data-subject="general" data-level="physics-basic physics" data-type="note">
+          <span class="level-label">物理基礎・物理</span>
               <h3>公式まとめ</h3>
               <p>主要な公式を短く確認するための資料です。問題演習前やテスト前の見直しに使えます。</p>
               <span class="text-link">PDFを開く</span>
             </a>
-            <a class="content-card" href="phys/phys-logic.pdf">
+            <a class="content-card" href="phys/phys-logic.pdf" data-subject="general" data-level="physics-basic physics" data-type="note">
+          <span class="level-label">物理基礎・物理</span>
               <h3>物理の考え方</h3>
               <p>公式を使う前に、現象、条件、図、式のつながりを整理するための補助資料です。</p>
               <span class="text-link">PDFを開く</span>
@@ -98,7 +112,7 @@
 
   <footer class="site-footer">
     <div class="footer-inner">
-      <span>Phys-Lab</span>
+      <span>高校物理の学習支援を目的とした、個人運営の公開教材サイトです。</span>
       <a href="../">トップへ戻る</a>
     </div>
   </footer>

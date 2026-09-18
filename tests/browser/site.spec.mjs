@@ -9,6 +9,16 @@ const routes = [
 ];
 const projectile = "tools/mechanics/projectile.html";
 
+test("legacy notes are not listed while replacements are being prepared", async ({ page }) => {
+  for (const route of [...routes, "404.html"]) {
+    await page.goto(route || "./");
+    await expect(page.locator('a[href*="note/"], a[href$=".pdf"][data-type="note"]')).toHaveCount(0);
+    await expect(page.locator('[data-type="note"]')).toHaveCount(0);
+  }
+  await page.goto("note/");
+  await expect(page.getByText("PDFノートは差し替え準備のため、掲載を一時停止しています。", { exact: false })).toBeVisible();
+});
+
 for (const route of routes) {
   test("layout and accessibility: " + (route || "home"), async ({ page }, info) => {
     const errors = [];

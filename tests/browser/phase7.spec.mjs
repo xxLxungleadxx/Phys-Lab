@@ -60,7 +60,7 @@ test("404 works at missing nested URLs and offers usable recovery", async ({ pag
 });
 
 test("test server does not expose local development files", async ({ request }) => {
-  for (const route of [".git/config", "docs/PHASE6_REPORT.md", "scripts/test-server.mjs", "package.json", "assets/%2e%2e/%2e%2e/package.json"]) {
+  for (const route of [".git/config", "docs/PHASE6_REPORT.md", "scripts/test-server.mjs", "package.json", "note/phys/phys-hs.pdf", "assets/%2e%2e/%2e%2e/package.json"]) {
     const response = await request.get(route);
     expect(response.status()).toBe(404);
     expect(await response.text()).toContain("お探しのページが見つかりません");

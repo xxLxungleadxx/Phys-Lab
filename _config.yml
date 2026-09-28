@@ -1,0 +1,24 @@
+# GitHub Pages uses Jekyll; only site pages and public assets should be served.
+# Jekyll's default exclusions must be repeated when `exclude` is customized.
+exclude:
+  - .sass-cache/
+  - .jekyll-cache/
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - AGENTS.md
+  - Phys-Lab_Codex_Development_Guide.md
+  - README.md
+  - docs/
+  - scripts/
+  - tests/
+  - eslint.config.mjs
+  - package.json
+  - package-lock.json
+  - playwright.config.mjs
+  - note/phys/

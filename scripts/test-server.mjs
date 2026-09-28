@@ -22,6 +22,7 @@ const server = http.createServer(async (req, res) => {
     const pathname = decodeURIComponent(new URL(req.url, "http://127.0.0.1").pathname);
     if (!pathname.startsWith(prefix)) { notFound(req, res); return; }
     let relative = pathname.slice(prefix.length);
+    if (relative.startsWith("note/phys/")) { notFound(req, res); return; }
     const publicDirectories = ["assets", "slide", "note", "link", "tools", "mechanics", "thermodynamics", "waves", "electromagnetism", "atomic"];
     if (relative.includes("/") && !publicDirectories.includes(relative.split("/")[0])) {
       notFound(req, res); return;

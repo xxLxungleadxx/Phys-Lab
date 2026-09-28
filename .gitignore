@@ -19,3 +19,14 @@
 /docs/*_CHECKLIST.md
 /docs/CHECKLIST.md
 /docs/CLI_BROWSER_TESTING.md
+
+# Retired note PDFs: keep local copies, but do not track or publish them.
+/note/phys/phys-formula.pdf
+/note/phys/phys-hs.pdf
+/note/phys/phys-hs_chap0.pdf
+/note/phys/phys-hs_chap1.pdf
+/note/phys/phys-hs_chap2.pdf
+/note/phys/phys-hs_chap3.pdf
+/note/phys/phys-hs_chap4.pdf
+/note/phys/phys-hs_chap5.pdf
+/note/phys/phys-logic.pdf
